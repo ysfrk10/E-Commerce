@@ -11,7 +11,7 @@ export default function CartPage() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 100 }}
       transition={{ duration: 0.3 }}
-      className="max-w-7xl mx-auto p-4 "
+      className="max-w-7xl mx-auto p-4 md:mt-30 mt-20 "
     >
       <div className="flex gap-1 items-center ">
         <button

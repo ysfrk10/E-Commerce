@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // icons
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 export default function NavBar() {
   const [show, setShowMenu] = useState(false);
+  const Navigate = useNavigate();
   function showMenu() {
     setShowMenu(!show);
   }
@@ -49,8 +51,19 @@ export default function NavBar() {
               />
             </svg>
           </button>
-          <div className="block md:hidden">
+          <div
+            onClick={() => {
+              Navigate("cart");
+            }}
+            className="block md:hidden relative"
+          >
             <ShoppingCartOutlinedIcon />
+            <span
+              className="w-4 h-4 absolute rounded-full 
+           bg-[red] dark:bg-[#821719] text-[white] top-[-5px] right-[-5px] flex items-center justify-center"
+            >
+              1
+            </span>
           </div>
         </div>
         <div
@@ -96,8 +109,19 @@ export default function NavBar() {
                 Settings
               </a>
             </li>
-            <div className="transition duration-300  hidden md:block  py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent ">
+            <div
+              onClick={() => {
+                Navigate("cart");
+              }}
+              className=" relative transition duration-300  hidden md:block  py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent "
+            >
               <ShoppingCartOutlinedIcon />
+              <span
+                className="w-4 h-4 absolute rounded-full 
+           bg-[red] dark:bg-[#821719] text-[white] top-[-5px] right-[-5px] flex items-center justify-center"
+              >
+                1
+              </span>
             </div>
           </ul>
         </div>

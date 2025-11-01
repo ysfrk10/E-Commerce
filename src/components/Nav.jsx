@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ToggleButton from "./ui/toggleButton";
 // icons
+
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 export default function NavBar() {
@@ -12,7 +14,12 @@ export default function NavBar() {
   return (
     <nav className=" top-0 w-full bg-white/50 mt-0 fixed backdrop-blur-md  border-b dark:bg-gray-900/50 dark:border-b dark:border-gray-700">
       <div className=" max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <a
+          onClick={() => {
+            Navigate("/");
+          }}
+          className="flex items-center space-x-3 rtl:space-x-reverse"
+        >
           <img
             src="../../../public/Y.png"
             className="h-9 bg-[black] rounded-md"
@@ -29,7 +36,10 @@ export default function NavBar() {
           <button
             data-collapse-toggle="navbar-default"
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center p-2 w-10 h-10
+             justify-center text-sm
+             text-gray-500  md:hidden 
+             dark:text-gray-400"
             aria-controls="navbar-default"
             aria-expanded="false"
             onClick={showMenu}
@@ -74,11 +84,21 @@ export default function NavBar() {
           }
           id="navbar-default"
         >
-          <ul className="backdrop-blur-md font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-[white]/50 dark:bg-gray-800 md:dark:bg-gray-900/50 dark:border-gray-700">
+          <ul
+            className="font-medium flex
+           flex-col p-4 md:p-0 mt-4 border bg-[transparent]
+          rounded-lg 
+            md:flex-row md:space-x-8 rtl:space-x-reverse md:items-center
+            md:mt-0 md:border-0"
+          >
             <li>
               <a
                 href="#"
-                className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                className="block py-2 px-3 
+                text-white bg-blue-700 
+                rounded-sm md:bg-transparent
+                md:text-blue-700 md:p-0
+                 dark:text-white md:dark:text-blue-500"
                 aria-current="page"
               >
                 Home
@@ -88,7 +108,16 @@ export default function NavBar() {
             <li>
               <a
                 href="#"
-                className="transition duration-300  block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                className="transition duration-300
+                  block py-2 px-3 text-gray-900
+                   rounded-sm hover:bg-gray-100
+                    md:hover:bg-transparent md:border-0
+                     md:hover:text-blue-700 md:p-0
+                      dark:text-white
+                       md:dark:hover:text-blue-500
+                        dark:hover:bg-gray-700 
+                        dark:hover:text-white 
+                        md:dark:hover:bg-transparent"
               >
                 Products
               </a>
@@ -123,6 +152,8 @@ export default function NavBar() {
                 1
               </span>
             </div>
+            {/* theme toggle */}
+            <ToggleButton />
           </ul>
         </div>
       </div>
@@ -132,7 +163,7 @@ export default function NavBar() {
 
 function Search() {
   return (
-    <form className="max-w-md mx-auto">
+    <form className=" mx-auto">
       <label
         for="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"

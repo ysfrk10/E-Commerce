@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
+import Counter from "@/components/counter";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 export default function CartPage() {
   const Navigate = useNavigate();
@@ -30,9 +29,9 @@ export default function CartPage() {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M7 1 1.3 6.326a.91.91 0 0 0 0 1.348L7 13"
             />
           </svg>
@@ -63,21 +62,7 @@ export default function CartPage() {
                 Price
               </p>
               {/* on click */}
-              <div className="flex items-center gap-2">
-                <button
-                  className="font-semibold border cursor-pointer
-            inline-flex justify-center items-center py-[4px] px-[4px] text-[15px] border-[black]/50 dark:border-[white]/50"
-                >
-                  <RemoveIcon />
-                </button>
-                <span className="text-[20px] mx-4">1</span>
-                <button
-                  className="font-semibold border cursor-pointer 
-            inline-flex justify-center items-center py-[4px] px-[4px] text-[15px] border-[black]/50 dark:border-[white]/50"
-                >
-                  <AddIcon />
-                </button>
-              </div>
+              <Counter />
             </div>
             <div className="flex flex-col justify-around items-end gap-2">
               <DeleteOutlinedIcon
@@ -108,21 +93,7 @@ export default function CartPage() {
                 Price
               </p>
               {/* on click */}
-              <div className="flex items-center gap-2">
-                <button
-                  className="font-semibold border cursor-pointer
-            inline-flex justify-center items-center py-[4px] px-[4px] text-[15px] border-[black]/50 dark:border-[white]/50"
-                >
-                  <RemoveIcon />
-                </button>
-                <span className="text-[20px] mx-4">1</span>
-                <button
-                  className="font-semibold border cursor-pointer 
-            inline-flex justify-center items-center py-[4px] px-[4px] text-[15px] border-[black]/50 dark:border-[white]/50"
-                >
-                  <AddIcon />
-                </button>
-              </div>
+              <Counter />
             </div>
             <div className="flex flex-col justify-around items-end gap-2">
               <DeleteOutlinedIcon

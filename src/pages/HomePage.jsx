@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import StarIcon from "@mui/icons-material/Star";
+import { Navigate, useNavigate } from "react-router-dom";
 export default function HomePage() {
+  const Navigate = useNavigate();
   return (
     <motion.div
       initial={{ opacity: 0, y: 100 }}
@@ -34,8 +36,8 @@ export default function HomePage() {
           </p>
         </div>
         <div>
-          <form class="max-w-sm flex gap-15 md:w-full w-[80%] mx-auto">
-            <label for="underline_select" class="sr-only">
+          <form className="max-w-sm flex gap-15 md:w-full w-[80%] mx-auto">
+            <label htmlFor="underline_select" className="sr-only">
               Underline select
             </label>
             <select
@@ -65,6 +67,9 @@ export default function HomePage() {
       {/* products CARDS */}
       <div className="md:flex flex-wrap ">
         <div
+          onClick={() => {
+            Navigate("productPage");
+          }}
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10
          border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
@@ -100,6 +105,7 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+
         <div
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10
@@ -136,6 +142,7 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+
         <div
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10

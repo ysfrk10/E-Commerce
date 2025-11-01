@@ -17,7 +17,6 @@ export default function ToggleButton() {
         type="checkbox"
         onChange={() => {
           SetTheme(theme === "light" ? "dark" : "light");
-          console.log(theme);
         }}
         value={"theme"}
         checked={theme === "dark"}

@@ -12,7 +12,7 @@ export default function NavBar() {
     setShowMenu(!show);
   }
   return (
-    <nav className=" top-0 w-full bg-white/50 mt-0 fixed backdrop-blur-md  border-b dark:bg-gray-900/50 dark:border-b dark:border-gray-700">
+    <nav className=" z-50 top-0 w-full bg-white/50 mt-0 fixed backdrop-blur-md  border-b dark:bg-gray-900/50 dark:border-b dark:border-gray-700">
       <div className=" max-w-7xl flex  items-center justify-between mx-auto p-4">
         <a
           onClick={() => {

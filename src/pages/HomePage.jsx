@@ -12,8 +12,10 @@ export default function HomePage() {
       return (
         <div
           key={Data[i].id}
-          onClick={() => {
-            Navigate("productPage");
+          id={Data[i].id}
+          onClick={(event) => {
+            const MyId = event.currentTarget.id;
+            Navigate(`/productPage/${MyId}`);
           }}
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10

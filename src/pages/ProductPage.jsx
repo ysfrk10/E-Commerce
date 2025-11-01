@@ -5,7 +5,13 @@ import CheckIcon from "@mui/icons-material/Check";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import { useData } from "@/contexts/APIDataContext";
+import { useParams } from "react-router-dom";
 export default function ProductPage() {
+  const { Data } = useData();
+  const { id } = useParams();
+  const CurrentProduct = Data.find((e) => e.id == id);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 150 }}
@@ -18,11 +24,11 @@ export default function ProductPage() {
 
       <div
         className="mx-auto max-w-[80%] transition 
-duration-300 mt-25 block   mb-10 md:flex md:gap-10 md:items-start "
+        duration-300 mt-25 block   mb-10 md:flex md:gap-10 md:items-start "
       >
         <div className="md:max-w-[50%]">
           <img
-            src="/public/product.png"
+            src={CurrentProduct.imageCover}
             className="rounded-md 
           transition duration-300 md:h-[500px] md:w-[2000px] md:object-cover "
             alt="Product"
@@ -30,7 +36,7 @@ duration-300 mt-25 block   mb-10 md:flex md:gap-10 md:items-start "
         </div>
         <div>
           <h2 className=" mx-2 font-bold text-[45px] leading-[50px] md:line-clamp-none">
-            Premium Wireless Headphones
+            {CurrentProduct.title}
           </h2>
           <div
             className="ml-2 flex gap-2 items-center
@@ -38,21 +44,24 @@ duration-300 mt-25 block   mb-10 md:flex md:gap-10 md:items-start "
           >
             <div>
               <StarIcon className="text-yellow-300" />
-              <StarIcon className="text-yellow-300" />
-              <StarIcon className="text-yellow-300" />
-              <StarIcon className="text-yellow-300" />
-              <StarIcon className="text-gray-300" />
             </div>
-            <h2 className=" font-bold text-[20px]">4.8</h2>
+            <h2 className=" font-bold text-[20px]">
+              {CurrentProduct.ratingsAverage}
+            </h2>
             <p className=" font-normal text-gray-700 dark:text-gray-400">
-              (1,234)
+              ({CurrentProduct.ratingsQuantity})
             </p>
           </div>
           <p className="text-[22px] mb-8 text-gray-700 dark:text-gray-400">
-            High-quality wireless headphones with active noise cancellation and
-            30-hour battery life.
+            {CurrentProduct.description}
           </p>
-          <h2 className="font-bold text-[40px] mb-4">$79.99</h2>
+          <h2 className="font-bold text-[40px] mb-4">
+            {CurrentProduct.price}
+            <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+              {" "}
+              EGP
+            </span>
+          </h2>
           <div>
             <Counter />
           </div>
@@ -68,25 +77,17 @@ duration-300 mt-25 block   mb-10 md:flex md:gap-10 md:items-start "
             <div className="flex gap-2 ml-4 my-4">
               <CheckIcon className="text-green-600" />
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                Active Noise Cancellation
+                {CurrentProduct.category.name}
               </p>
             </div>
             <div className="flex gap-2 ml-4 my-4">
-              <CheckIcon className="text-green-600" />
+              <img
+                src={CurrentProduct.brand.image}
+                className="h-8 w-10"
+                alt=""
+              />
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                30-Hour Battery Life
-              </p>
-            </div>
-            <div className="flex gap-2 ml-4 my-4">
-              <CheckIcon className="text-green-600" />
-              <p className="font-normal text-gray-700 dark:text-gray-400">
-                Premium Sound Quality
-              </p>
-            </div>
-            <div className="flex gap-2 ml-4 my-4">
-              <CheckIcon className="text-green-600" />
-              <p className="font-normal text-gray-700 dark:text-gray-400">
-                Comfortable Fit
+                {CurrentProduct.brand.name}
               </p>
             </div>
           </div>

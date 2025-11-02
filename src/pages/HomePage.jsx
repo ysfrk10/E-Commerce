@@ -2,10 +2,13 @@ import { motion } from "framer-motion";
 import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 import { useData } from "@/contexts/APIDataContext";
+import { useCart } from "@/contexts/CartContext";
 
 export default function HomePage() {
   const Navigate = useNavigate();
   const { Data } = useData();
+  const { addToCart } = useCart();
+
   function FetchProductData() {
     // console.log(Data); =>>>>> ALL DATA
     return Data.map((e, i) => {
@@ -13,10 +16,6 @@ export default function HomePage() {
         <div
           key={Data[i].id}
           id={Data[i].id}
-          onClick={(event) => {
-            const MyId = event.currentTarget.id;
-            Navigate(`/productPage/${MyId}`);
-          }}
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10
          border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
@@ -24,6 +23,11 @@ export default function HomePage() {
         md:flex md:flex-col md:justify-between"
         >
           <img
+            id={Data[i].id}
+            onClick={(event) => {
+              const MyId = event.currentTarget.id;
+              Navigate(`/productPage/${MyId}`);
+            }}
             src={Data[i].imageCover}
             className="w-[90%] my-4 mx-auto rounded-md hover:scale-[1.05] 
           transition duration-300"
@@ -36,7 +40,14 @@ export default function HomePage() {
               ({Data[i].ratingsQuantity})
             </p>
           </div>
-          <div className="ml-2 ">
+          <div
+            id={Data[i].id}
+            onClick={(event) => {
+              const MyId = event.currentTarget.id;
+              Navigate(`/productPage/${MyId}`);
+            }}
+            className="ml-2 "
+          >
             <h2 className="line-clamp-2 font-bold text-[20px]  ">
               {Data[i].title}
             </h2>
@@ -57,13 +68,18 @@ export default function HomePage() {
                 EGP
               </span>
             </h2>
-            <button
-              className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 dark:bg-gray-50 border dark:border-gray-200 rounded-lg shadow-sm dark:hover:bg-gray-200
-       bg-[black]/90 mb-6 border-gray-700 hover:bg-gray-700 dark:text-gray-800 text-gray-50 "
-            >
-              Add To Cart ({Data[i].quantity})
-            </button>
           </div>
+          <button
+            onClick={() => {
+              const MyId = Data[i].id;
+              Navigate(`/cart/${MyId}`);
+              addToCart(Data[i]);
+            }}
+            className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 dark:bg-gray-50 border dark:border-gray-200 rounded-lg shadow-sm dark:hover:bg-gray-200
+       bg-[black]/90 mb-6 border-gray-700 hover:bg-gray-700 dark:text-gray-800 text-gray-50 "
+          >
+            Add To Cart ({Data[i].quantity})
+          </button>
         </div>
       );
     });

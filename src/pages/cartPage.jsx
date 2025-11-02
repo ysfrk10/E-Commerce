@@ -2,8 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Counter from "@/components/counter";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { useData } from "@/contexts/APIDataContext";
+import { useCart } from "@/contexts/CartContext";
 export default function CartPage() {
   const Navigate = useNavigate();
+  const { Data } = useData();
+  const { cart, addToCart } = useCart();
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -38,85 +42,87 @@ export default function CartPage() {
         </button>
         <h1 className="text-2xl font-bold">Shopping Cart</h1>
       </div>
-      {/* products */}
       <div
-        className="md:mx-auto  md:max-w-[80%] transition duration-300 mt-4 block max-w-sm p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm 
-       dark:bg-gray-800 dark:border-gray-700 "
+        className="mx-auto md:mx-32 max-w-[15%] transition 
+duration-300 mt-4 block p-3 bg-gray-50 
+border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
+ dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
-        {/* product card */}
-        <div>
-          <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Items (2)
-          </h1>
-          <div className="flex gap-3 ">
-            <img
-              className="md:w-[150px] w-[30%] h-[30%]"
-              src="../../public/aluminum-laptop-stand.jpg"
-              alt=""
-            />
-            <div className="w-[50%] md:mt-0 -mt-2.5 md:flex md:flex-col md:justify-evenly">
-              <h3 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Product Name
-              </h3>
-              <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
-                Price
-              </p>
-              {/* on click */}
-              <Counter />
-            </div>
-            <div className="flex flex-col justify-around items-end gap-2">
-              <DeleteOutlinedIcon
-                sx={{
-                  transition: "300ms",
-                }}
-                className=" hover:text-[red] "
-              />
-              <h4 className="md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
-                1,233
-              </h4>
-            </div>
-          </div>
-        </div>
-        {/* product card */}
-        <div className="mt-4">
-          <div className="flex gap-3 ">
-            <img
-              className="md:w-[150px] w-[30%] h-[30%]"
-              src="../../public/aluminum-laptop-stand.jpg"
-              alt=""
-            />
-            <div className="w-[50%] md:mt-0 -mt-2.5 md:flex md:flex-col md:justify-evenly">
-              <h3 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Product Name
-              </h3>
-              <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
-                Price
-              </p>
-              {/* on click */}
-              <Counter />
-            </div>
-            <div className="flex flex-col justify-around items-end gap-2">
-              <DeleteOutlinedIcon
-                sx={{
-                  transition: "300ms",
-                }}
-                className=" hover:text-[red] "
-              />
-              <h4 className="md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
-                1,233
-              </h4>
-            </div>
-          </div>
-        </div>
-        <button
-          className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
-       dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-        >
-          Clear Cart
-        </button>
+        {" "}
+        <h1 className="mb-2 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Items (2)
+        </h1>
       </div>
-      {/* checkout */}
+      {cart.map((AddedProduct) => (
+        <>
+          {/* products */}
+          <div
+            className="md:mx-auto  md:max-w-[80%] transition duration-300 mt-4 block max-w-sm p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm 
+       dark:bg-gray-800 dark:border-gray-700 "
+          >
+            {/* product card */}
+            <div>
+              <div className="flex gap-3 ">
+                <img
+                  className="md:w-[150px] w-[30%] h-[30%]"
+                  src={AddedProduct.imageCover}
+                  alt=""
+                />
+                <div className="w-[50%] cursor-pointer  md:mt-0 -mt-2.5 md:flex md:flex-col md:justify-evenly">
+                  <div
+                    onClick={() => {
+                      const MyId = AddedProduct.id;
+                      Navigate(`/productPage/${MyId}`);
+                    }}
+                  >
+                    <h3 className="line-clamp-1 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                      {AddedProduct.title}
+                    </h3>
+                    <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
+                      {AddedProduct.price}
+                      <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+                        {" "}
+                        EGP
+                      </span>
+                    </p>
+                  </div>
+                  {/* on click */}
+                  <div>
+                    <p className=" font-bold text-[15px]">
+                      Quantity:
+                      <span className="  text-[15px]"> 2</span>
+                    </p>
+                  </div>
+                </div>
 
+                <div className="flex flex-col justify-around items-end gap-2">
+                  <DeleteOutlinedIcon
+                    sx={{
+                      transition: "300ms",
+                    }}
+                    className=" hover:text-[red] "
+                  />
+                  <h4 className="md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
+                    1,233
+                  </h4>
+                </div>
+              </div>
+            </div>
+            {/* product card */}
+          </div>
+        </>
+      ))}
+      <button
+        onClick={() => {
+          localStorage.removeItem("cart");
+          Navigate(0);
+        }}
+        className="md:mx-auto md:max-w-[40%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
+       dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+      >
+        Clear Cart
+      </button>
+      {/* // /* checkout */}
       <div
         className="md:mx-auto  md:max-w-[80%] transition duration-300 mt-4 block max-w-sm p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm 
        dark:bg-gray-800 dark:border-gray-700 "

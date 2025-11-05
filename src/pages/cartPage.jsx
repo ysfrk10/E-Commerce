@@ -2,12 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Counter from "@/components/counter";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { useData } from "@/contexts/APIDataContext";
 import { useCart } from "@/contexts/CartContext";
+import { useCount } from "@/contexts/countContext";
+import { useState } from "react";
 export default function CartPage() {
   const Navigate = useNavigate();
-  const { Data } = useData();
-  const { cart, addToCart } = useCart();
+  const { count } = useCount();
+  const { cart } = useCart();
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -71,6 +72,7 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
                 <div className="w-[50%] cursor-pointer  md:mt-0 -mt-2.5 md:flex md:flex-col md:justify-evenly">
                   <div
                     onClick={() => {
+                      console.log("from cart", AddedProduct.exist);
                       const MyId = AddedProduct.id;
                       Navigate(`/productPage/${MyId}`);
                     }}
@@ -90,7 +92,10 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
                   <div>
                     <p className=" font-bold text-[15px]">
                       Quantity:
-                      <span className="  text-[15px]"> 2</span>
+                      <span className="  text-[15px]">
+                        {" "}
+                        {AddedProduct.exist}
+                      </span>
                     </p>
                   </div>
                 </div>

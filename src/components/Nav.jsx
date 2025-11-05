@@ -63,7 +63,7 @@ export default function NavBar() {
           </button>
           <div
             onClick={() => {
-              Navigate("cart");
+              Navigate("/cart");
             }}
             className="block md:hidden relative"
           >

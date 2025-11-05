@@ -1,8 +1,9 @@
-import { createContext, useState, useContext, useEffect } from "react";
-
+import { createContext, useState, useContext } from "react";
+import { useCount } from "./countContext";
 export const CartContext = createContext({});
 
 export function CartProvider({ children }) {
+  const { count, SetCount } = useCount();
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem("cart");
@@ -14,12 +15,27 @@ export function CartProvider({ children }) {
     }
   });
   const addToCart = (product) => {
-    console.log("added:", product);
-    setCart((prev) => [...prev, product]);
+    const existProduct = cart.find((item) => item.id === product.id); //true ,false
+    let updatedCart;
+    if (existProduct) {
+      updatedCart = cart.map((item) => {
+        if (item.id === product.id) {
+          SetCount(1);
+          return { ...item, exist: item.exist + 1 + count - 1 };
+        } else {
+          return item;
+        }
+      });
+    } else {
+      const newProduct = { ...product, exist: 1 + count - 1 };
+      SetCount(1);
+      updatedCart = [...cart, newProduct];
+      console.log("added from context else case:", newProduct, updatedCart);
+    }
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+
   return (
     <CartContext.Provider value={{ cart, setCart, addToCart }}>
       {children}
@@ -30,3 +46,49 @@ export function CartProvider({ children }) {
 export const useCart = () => {
   return useContext(CartContext);
 };
+// import { createContext, useState, useContext } from "react";
+// export const CartContext = createContext({});
+
+// export function CartProvider({ children }) {
+//   const [cart, setCart] = useState(() => {
+//     try {
+//       const saved = localStorage.getItem("cart");
+//       return saved ? JSON.parse(saved) : [];
+//     } catch (err) {
+//       console.error("Invalid JSON in localStorage:", err);
+//       localStorage.removeItem("cart");
+//       return [];
+//     }
+//   });
+//   const addToCart = (product) => {
+//     const existProduct = cart.find((item) => {
+//       item.id === product.id;
+//     });
+//     let updatedCart;
+
+//     if (existProduct) {
+//       // لو موجود، نزود الكمية
+//       setCart(
+//         cart.map((item) =>
+//           item.id === product.id ? { ...item, count: item.count + 1 } : item
+//         )
+//       );
+//     } else {
+//       updatedCart = [...cart, { ...product, count: 1 }];
+//     }
+//     setCart(updatedCart);
+
+//     console.log("added:", product);
+//     localStorage.setItem("cart", JSON.stringify(updatedCart));
+//   };
+
+//   return (
+//     <CartContext.Provider value={{ cart, setCart, addToCart }}>
+//       {children}
+//     </CartContext.Provider>
+//   );
+// }
+
+// export const useCart = () => {
+//   return useContext(CartContext);
+// };

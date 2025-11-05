@@ -9,9 +9,11 @@ import { useData } from "@/contexts/APIDataContext";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import { useCount } from "@/contexts/countContext";
 export default function ProductPage() {
-  const { Data } = useData();
   const { id } = useParams();
+  const { DataCount } = useCount();
+  const { Data } = useData();
   const { addToCart } = useCart();
   const Navigate = useNavigate();
   const CurrentProduct = Data.find((e) => e.id == id);
@@ -71,9 +73,8 @@ export default function ProductPage() {
           </div>
           <button
             onClick={() => {
-              Navigate(`/cart/${CurrentProduct.id}`);
               addToCart(CurrentProduct);
-              localStorage.setItem("cart", JSON.stringify(CurrentProduct));
+              Navigate(`/cart`);
             }}
             className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 dark:bg-gray-50 border dark:border-gray-200 rounded-lg shadow-sm dark:hover:bg-gray-200
        bg-[black]/90 mb-6 border-gray-700 hover:bg-gray-700 dark:text-gray-800 text-gray-50 "

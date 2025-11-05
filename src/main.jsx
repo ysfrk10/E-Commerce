@@ -9,6 +9,7 @@ import ProductPage from "./pages/ProductPage";
 import { CartProvider } from "./contexts/CartContext";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { DataProvider } from "./contexts/APIDataContext";
+import { CountProvider } from "./contexts/countContext";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         element: <CartPage />,
       },
       {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
         path: "/productPage/:id",
         element: <ProductPage />,
       },
@@ -32,10 +37,12 @@ const router = createBrowserRouter([
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CartProvider>
-      <DataProvider>
-        <RouterProvider router={router} />
-      </DataProvider>
-    </CartProvider>
+    <CountProvider>
+      <CartProvider>
+        <DataProvider>
+          <RouterProvider router={router} />
+        </DataProvider>
+      </CartProvider>
+    </CountProvider>
   </StrictMode>
 );

@@ -4,11 +4,11 @@ import Counter from "@/components/counter";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useCart } from "@/contexts/CartContext";
 import { useCount } from "@/contexts/countContext";
-import { useState } from "react";
 export default function CartPage() {
   const Navigate = useNavigate();
-  const { count } = useCount();
   const { cart } = useCart();
+  const eachPrice = cart.map((E) => E.exist * E.price);
+  const totalPrice = eachPrice.reduce((sum, price) => sum + price, 0);
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -43,6 +43,7 @@ export default function CartPage() {
         </button>
         <h1 className="text-2xl font-bold">Shopping Cart</h1>
       </div>
+
       <div
         className="mx-auto md:mx-32 max-w-[15%] transition 
 duration-300 mt-4 block p-3 bg-gray-50 
@@ -107,8 +108,11 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
                     }}
                     className=" hover:text-[red] "
                   />
-                  <h4 className="md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
-                    1,233
+                  <h4 className="flex items-end gap-2 md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
+                    {AddedProduct.price * AddedProduct.exist}
+                    <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+                      EGP
+                    </span>
                   </h4>
                 </div>
               </div>
@@ -139,7 +143,13 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
           <p className="font-normal text-gray-700 dark:text-gray-400">
             Subtotal
           </p>
-          <h3 className=" font-bold text-[20px]">$1,233</h3>
+          <h3 className=" font-bold text-[20px]">
+            {totalPrice}{" "}
+            <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+              {" "}
+              EGP
+            </span>
+          </h3>
         </div>
         <div className="my-4 flex justify-between items-center ">
           <p className="font-normal text-gray-700 dark:text-gray-400">
@@ -149,12 +159,24 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
         </div>
         <div className="mb-4 flex justify-between items-center ">
           <p className="font-normal text-gray-700 dark:text-gray-400">Tax</p>
-          <h3 className=" font-bold text-[20px]">$233</h3>
+          <h3 className=" font-bold text-[20px]">
+            {totalPrice * 0.14}{" "}
+            <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+              {" "}
+              EGP
+            </span>
+          </h3>
         </div>
         <hr />
         <div className="mt-4 flex justify-between items-center ">
           <h3 className=" font-bold text-[20px]">Total</h3>
-          <h3 className=" font-bold text-[20px]">$233</h3>
+          <h3 className=" font-bold text-[20px]">
+            {totalPrice * 1.14}
+            <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+              {" "}
+              EGP
+            </span>
+          </h3>
         </div>
         <div>
           <button

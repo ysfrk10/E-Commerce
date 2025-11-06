@@ -6,9 +6,10 @@ import { useCart } from "@/contexts/CartContext";
 import { useCount } from "@/contexts/countContext";
 export default function CartPage() {
   const Navigate = useNavigate();
-  const { cart } = useCart();
+  const { cart, setCart } = useCart();
   const eachPrice = cart.map((E) => E.exist * E.price);
   const totalPrice = eachPrice.reduce((sum, price) => sum + price, 0);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -45,14 +46,14 @@ export default function CartPage() {
       </div>
 
       <div
-        className="mx-auto md:mx-32 max-w-[15%] transition 
+        className="mx-auto md:mx-32 md:max-w-[15%] transition max-w-[50%]
 duration-300 mt-4 block p-3 bg-gray-50 
 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
  dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         {" "}
         <h1 className="mb-2 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Items (2)
+          Items ({cart.length})
         </h1>
       </div>
       {cart.map((AddedProduct) => (
@@ -101,10 +102,20 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-around items-end gap-2">
+                <div className=" flex flex-col justify-around items-end gap-2">
                   <DeleteOutlinedIcon
+                    onClick={() => {
+                      const MyId = AddedProduct.id;
+                      const SelectedProduct = cart.filter((e) => e.id !== MyId);
+                      setCart(SelectedProduct);
+                      localStorage.setItem(
+                        "cart",
+                        JSON.stringify(SelectedProduct)
+                      );
+                    }}
                     sx={{
                       transition: "300ms",
+                      cursor: "pointer",
                     }}
                     className=" hover:text-[red] "
                   />
@@ -160,7 +171,7 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
         <div className="mb-4 flex justify-between items-center ">
           <p className="font-normal text-gray-700 dark:text-gray-400">Tax</p>
           <h3 className=" font-bold text-[20px]">
-            {totalPrice * 0.14}{" "}
+            {(totalPrice * 0.14).toFixed(2)}{" "}
             <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
               {" "}
               EGP
@@ -171,7 +182,7 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
         <div className="mt-4 flex justify-between items-center ">
           <h3 className=" font-bold text-[20px]">Total</h3>
           <h3 className=" font-bold text-[20px]">
-            {totalPrice * 1.14}
+            {(totalPrice * 1.14).toFixed(2)}
             <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
               {" "}
               EGP

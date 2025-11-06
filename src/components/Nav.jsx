@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToggleButton from "./ui/toggleButton";
+import { useCart } from "@/contexts/CartContext";
 // icons
 
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -8,12 +9,20 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 export default function NavBar() {
   const [show, setShowMenu] = useState(false);
   const Navigate = useNavigate();
+  const { cart } = useCart();
   function showMenu() {
     setShowMenu(!show);
   }
   return (
-    <nav className=" z-50 top-0 w-full bg-white/50 mt-0 fixed backdrop-blur-md  border-b dark:bg-gray-900/50 dark:border-b dark:border-gray-700">
-      <div className=" max-w-7xl flex  items-center justify-between mx-auto p-4">
+    <nav
+      className=" z-50 top-0 w-full bg-white/50
+     mt-0 fixed backdrop-blur-md  border-b dark:bg-gray-900/50 
+     dark:border-b dark:border-gray-700"
+    >
+      <div
+        className="max-w-7xl flex flex-wrap
+         items-center justify-between mx-auto p-4"
+      >
         <a
           onClick={() => {
             Navigate("/");
@@ -36,7 +45,7 @@ export default function NavBar() {
           <button
             data-collapse-toggle="navbar-default"
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10
+            className="items-center p-2 w-10 h-10
              justify-center text-sm
              text-gray-500  md:hidden 
              dark:text-gray-400"
@@ -72,7 +81,7 @@ export default function NavBar() {
               className="w-4 h-4 absolute rounded-full 
            bg-[red] dark:bg-[#821719] text-[white] top-[-5px] right-[-5px] flex items-center justify-center"
             >
-              1
+              {cart.length}
             </span>
           </div>
         </div>
@@ -84,11 +93,18 @@ export default function NavBar() {
           }
           id="navbar-default"
         >
+          {/*  className="font-medium
+           flex flex-col p-4 md:p-0 mt-4 border 
+           border-gray-100 rounded-lg bg-gray-50
+            md:flex-row md:space-x-8 rtl:space-x-reverse 
+            md:mt-0 md:border-0 md:bg-white dark:bg-gray-800
+             md:dark:bg-gray-900 dark:border-gray-700" */}
           <ul
             className="font-medium flex
-           flex-col p-4 md:p-0 mt-4 border bg-[transparent]
-          rounded-lg 
-            md:flex-row md:space-x-8 rtl:space-x-reverse md:items-center
+           flex-col p-4 md:p-0 mt-4 border 
+            rounded-lg 
+            md:flex-row md:space-x-8 rtl:space-x-reverse
+             md:items-center
             md:mt-0 md:border-0"
           >
             <li>
@@ -146,10 +162,16 @@ export default function NavBar() {
             >
               <ShoppingCartOutlinedIcon />
               <span
-                className="w-4 h-4 absolute rounded-full 
-           bg-[red] dark:bg-[#821719] text-[white] top-[-5px] right-[-5px] flex items-center justify-center"
+                className={
+                  cart.length > 0
+                    ? `w-4 h-4 absolute 
+                rounded-full transition duration-300  
+           bg-[red] dark:bg-[#821719]
+            text-[white] top-[-5px] right-[-5px] flex items-center justify-center`
+                    : "hidden"
+                }
               >
-                1
+                {cart.length}
               </span>
             </div>
             {/* theme toggle */}

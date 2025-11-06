@@ -3,7 +3,7 @@ import { useCount } from "./countContext";
 export const CartContext = createContext({});
 
 export function CartProvider({ children }) {
-  const { count, SetCount } = useCount();
+  const { count, setCount } = useCount();
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem("cart");
@@ -20,17 +20,23 @@ export function CartProvider({ children }) {
     if (existProduct) {
       updatedCart = cart.map((item) => {
         if (item.id === product.id) {
-          SetCount(1);
-          return { ...item, exist: item.exist + 1 + count - 1 };
+          setCount(1);
+          return { ...item, exist: item.exist + count };
         } else {
           return item;
         }
       });
     } else {
-      const newProduct = { ...product, exist: 1 + count - 1 };
-      SetCount(1);
+      setCount(1);
+      const newProduct = { ...product, exist: 1 };
       updatedCart = [...cart, newProduct];
-      console.log("added from context else case:", newProduct, updatedCart);
+      console.log(
+        "added from context else case:",
+        "new",
+        newProduct,
+        "updated",
+        updatedCart
+      );
     }
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));

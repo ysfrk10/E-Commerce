@@ -3,89 +3,111 @@ import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 import { useData } from "@/contexts/APIDataContext";
 import { useCart } from "@/contexts/CartContext";
+import { useState } from "react";
 
 export default function HomePage() {
   const Navigate = useNavigate();
   const { Data } = useData();
   const { addToCart } = useCart();
+  const [selectedCategory, setSelected] = useState("All Categories");
 
+  function selectCategory(event) {
+    setSelected(event.target.value);
+    console.log(filteredProduct[0].category.name);
+  }
+  const filteredProduct =
+    selectedCategory === "All Categories"
+      ? Data
+      : Data.filter((product) => {
+          return product.category.name === selectedCategory;
+        });
+  let categoryName = Data.map((cat) => {
+    return cat.category.name;
+  });
+  const allCategories = [...new Set(categoryName)];
+
+  // JSX
   function FetchProductData() {
     // console.log(Data); =>>>>> ALL DATA
-    return Data.map((e, i) => {
+    return filteredProduct.map((e) => {
       return (
-        <div
-          key={Data[i].id}
-          id={Data[i].id}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          transition={{ duration: 0.3 }}
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10
          border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 
         md:flex md:flex-col md:justify-between"
         >
-          <img
-            id={Data[i].id}
-            onClick={(event) => {
-              const MyId = event.currentTarget.id;
-              Navigate(`/productPage/${MyId}`);
-            }}
-            src={Data[i].imageCover}
-            className="w-[90%] my-4 mx-auto rounded-md hover:scale-[1.05] 
+          <div key={e.id} id={e.id}>
+            <img
+              id={e.id}
+              onClick={(event) => {
+                const MyId = event.currentTarget.id;
+                Navigate(`/productPage/${MyId}`);
+              }}
+              src={e.imageCover}
+              className="w-[90%] my-4 mx-auto rounded-md hover:scale-[1.05] 
           transition duration-300"
-            alt="Product"
-          />
-          <div className="ml-2 flex gap-2 items-center">
-            <StarIcon className="text-yellow-300" />
-            <h2 className=" font-bold text-[20px]">{Data[i].ratingsAverage}</h2>
-            <p className=" font-normal text-gray-700 dark:text-gray-400">
-              ({Data[i].ratingsQuantity})
-            </p>
-          </div>
-          <div
-            id={Data[i].id}
-            onClick={(event) => {
-              const MyId = event.currentTarget.id;
-              Navigate(`/productPage/${MyId}`);
-            }}
-            className="ml-2 "
-          >
-            <h2 className="line-clamp-2 font-bold text-[20px]  ">
-              {Data[i].title}
-            </h2>
-            <p className="line-clamp-2 font-normal mb-8 text-gray-700 dark:text-gray-400">
-              {Data[i].description}
-            </p>
-            <h2 className=" font-bold text-[20px] line-clamp-1 md:line-clamp-none">
-              Brand:{" "}
-              <span className=" font-normal text-[15px] text-gray-700 dark:text-gray-400">
-                {Data[i].brand.name}
-              </span>
-            </h2>
+              alt="Product"
+            />
+            <div className="ml-2 flex gap-2 items-center">
+              <StarIcon className="text-yellow-300" />
+              <h2 className=" font-bold text-[20px]">{e.ratingsAverage}</h2>
+              <p className=" font-normal text-gray-700 dark:text-gray-400">
+                ({e.ratingsQuantity})
+              </p>
+            </div>
+            <div
+              id={e.id}
+              onClick={(event) => {
+                const MyId = event.currentTarget.id;
+                Navigate(`/productPage/${MyId}`);
+              }}
+              className="ml-2 "
+            >
+              <h2 className="line-clamp-2 font-bold text-[20px]  ">
+                {e.title}
+              </h2>
+              <p className="line-clamp-2 font-normal mb-8 text-gray-700 dark:text-gray-400">
+                {e.description}
+              </p>
+              <h2 className=" font-bold text-[20px] line-clamp-1 md:line-clamp-none">
+                Brand:{" "}
+                <span className=" font-normal text-[15px] text-gray-700 dark:text-gray-400">
+                  {e.brand.name}
+                </span>
+              </h2>
 
-            <h2 className="font-bold text-[30px]">
-              {Data[i].price}
-              <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                {" "}
-                EGP
-              </span>
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addToCart(Data[i]);
-            }}
-            className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 dark:bg-gray-50 border dark:border-gray-200 rounded-lg shadow-sm dark:hover:bg-gray-200
+              <h2 className="font-bold text-[30px]">
+                {e.price}
+                <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+                  {" "}
+                  EGP
+                </span>
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                addToCart(e);
+              }}
+              className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 dark:bg-gray-50 border dark:border-gray-200 rounded-lg shadow-sm dark:hover:bg-gray-200
        bg-[black]/90 mb-6 border-gray-700 hover:bg-gray-700 dark:text-gray-800 text-gray-50 "
-          >
-            Add To Cart ({Data[i].quantity})
-          </button>
-        </div>
+            >
+              Add To Cart ({e.quantity})
+            </button>
+          </div>
+        </motion.div>
       );
     });
   }
-  function CategoriesData() {}
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 100 }}
@@ -115,7 +137,7 @@ export default function HomePage() {
         <div className="flex flex-col gap-1 mx-10 my-10 ">
           <h1 className=" font-bold text-[30px]">All Products</h1>
           <p className="mb-4 text-[20px] font-normal text-gray-700 dark:text-gray-400">
-            {Data.length} products Available
+            {filteredProduct.length} products Available
           </p>
         </div>
         <div>
@@ -125,11 +147,19 @@ export default function HomePage() {
             </label>
             {/*  */}
             <select
+              onChange={selectCategory}
               id="underline_select"
-              className=" block  px-0 w-[100px]text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              className=" block  px-0 w-[100px] text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              value={selectedCategory}
             >
               <option selected>All Categories</option>
-              <option value="US"></option>
+              {allCategories.map((e, i) => {
+                return (
+                  <option key={i} value={e}>
+                    {e}
+                  </option>
+                );
+              })}
             </select>
             {/*  */}
             <select
@@ -147,7 +177,9 @@ export default function HomePage() {
       </div>
       {/* onClick */}
       {/* products CARDS */}
+
       <div className="md:mx-auto md:my-1 md:flex flex-wrap md:justify-center  ">
+        {" "}
         <FetchProductData />
       </div>
     </motion.div>

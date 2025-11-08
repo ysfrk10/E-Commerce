@@ -42,7 +42,7 @@ createRoot(document.getElementById("root")).render(
       <CountProvider>
         <CartProvider>
           <DataProvider>
-            <RouterProvider router={router} />
+            <RouterProvider basename="/E-Commerce" router={router} />
           </DataProvider>
         </CartProvider>
       </CountProvider>

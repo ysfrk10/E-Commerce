@@ -32,7 +32,7 @@ export default function NavBar() {
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img
-            src="../../../public/Y.png"
+            src="/../../../public/Y.png"
             className="h-9 bg-[black] rounded-lg"
             alt="Flowbite Logo"
           />

@@ -10,15 +10,17 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { useCount } from "@/contexts/countContext";
+import { SkeletonsProduct } from "@/components/ui/skeleton";
 export default function ProductPage() {
   const { id } = useParams();
   const { DataCount } = useCount();
-  const { Data } = useData();
+  const { Data, loading } = useData();
   const { addToCart } = useCart();
   const Navigate = useNavigate();
   const CurrentProduct = Data.find((e) => e.id == id);
-
-  return (
+  const content = loading ? (
+    <SkeletonsProduct />
+  ) : (
     <motion.div
       initial={{ opacity: 0, x: 150 }}
       animate={{ opacity: 1, x: 0 }}
@@ -147,4 +149,5 @@ export default function ProductPage() {
       </div>
     </motion.div>
   );
+  return <div>{content}</div>;
 }

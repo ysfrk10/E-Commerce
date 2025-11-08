@@ -5,16 +5,18 @@ import { useData } from "@/contexts/APIDataContext";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { useSearch } from "@/contexts/searchContext";
+import { SkeletonsHome } from "@/components/ui/skeleton";
 
 export default function HomePage() {
   const Navigate = useNavigate();
-  const { Data } = useData();
+  const { Data, loading } = useData();
   const { addToCart } = useCart();
   const { search, foundItem } = useSearch();
   const [selectedCategory, setSelected] = useState("All Categories");
   const [filteredProduct, setFilteredProduct] = useState([]);
   const [foundedItem, setFoundedItem] = useState([]);
 
+  console.log(loading);
   function selectCategory(event) {
     setSelected(event.target.value);
   }
@@ -179,8 +181,16 @@ export default function HomePage() {
       {/* products CARDS */}
 
       <div className="md:mx-auto md:my-1 md:flex flex-wrap md:justify-center  ">
-        {" "}
-        <FetchProductData />
+        {loading ? (
+          <div className="flex md:justify-around flex-col md:flex-row  justify-center items-center">
+            <SkeletonsHome />
+            <SkeletonsHome />
+            <SkeletonsHome />
+            <SkeletonsHome />
+          </div>
+        ) : (
+          <FetchProductData />
+        )}
       </div>
     </motion.div>
   );

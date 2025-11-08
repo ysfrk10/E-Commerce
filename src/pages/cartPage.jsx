@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Counter from "@/components/counter";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useCart } from "@/contexts/CartContext";
-import { useCount } from "@/contexts/countContext";
+import { useData } from "@/contexts/APIDataContext";
+import { SkeletonsCart } from "@/components/ui/skeleton";
 export default function CartPage() {
   const Navigate = useNavigate();
   const { cart, setCart } = useCart();
+  const { loading } = useData();
   const eachPrice = cart.map((E) => E.exist * E.price);
   const totalPrice = eachPrice.reduce((sum, price) => sum + price, 0);
 
@@ -56,82 +57,89 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
           Items ({cart.length})
         </h1>
       </div>
-      {cart.map((AddedProduct) => (
-        <>
-          {/* products */}
-          <div
-            className="md:mx-auto  md:max-w-[80%] transition duration-300 mt-4 block max-w-sm p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm 
+      {loading ? (
+        <SkeletonsCart />
+      ) : (
+        cart.map((AddedProduct) => (
+          <>
+            {/* products */}
+            <div
+              className="md:mx-auto  md:max-w-[80%] transition duration-300 mt-4 block max-w-sm p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm 
        dark:bg-gray-800 dark:border-gray-700 "
-          >
-            {/* product card */}
-            <div>
-              <div className="flex gap-3 ">
-                <img
-                  className="md:w-[150px] w-[30%] h-[30%]"
-                  src={AddedProduct.imageCover}
-                  alt=""
-                />
-                <div className="w-[50%] cursor-pointer  md:mt-0 -mt-2.5 md:flex md:flex-col md:justify-evenly">
-                  <div
-                    onClick={() => {
-                      console.log("from cart", AddedProduct.exist);
-                      const MyId = AddedProduct.id;
-                      Navigate(`/productPage/${MyId}`);
-                    }}
-                  >
-                    <h3 className="line-clamp-1 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                      {AddedProduct.title}
-                    </h3>
-                    <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
-                      {AddedProduct.price}
+            >
+              {/* product card */}
+              <div>
+                <div className="flex gap-3 ">
+                  <img
+                    className="md:w-[150px] w-[30%] h-[30%]"
+                    src={AddedProduct.imageCover}
+                    alt=""
+                  />
+                  <div className="w-[50%] cursor-pointer  md:mt-0 -mt-2.5 md:flex md:flex-col md:justify-evenly">
+                    <div
+                      onClick={() => {
+                        console.log("from cart", AddedProduct.exist);
+                        const MyId = AddedProduct.id;
+                        Navigate(`/productPage/${MyId}`);
+                      }}
+                    >
+                      <h3 className="line-clamp-1 mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        {AddedProduct.title}
+                      </h3>
+                      <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
+                        {AddedProduct.price}
+                        <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
+                          {" "}
+                          EGP
+                        </span>
+                      </p>
+                    </div>
+                    {/* on click */}
+                    <div>
+                      <p className=" font-bold text-[15px]">
+                        Quantity:
+                        <span className="  text-[15px]">
+                          {" "}
+                          {AddedProduct.exist}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className=" flex flex-col justify-around items-end gap-2">
+                    <DeleteOutlinedIcon
+                      onClick={() => {
+                        const MyId = AddedProduct.id;
+                        const SelectedProduct = cart.filter(
+                          (e) => e.id !== MyId
+                        );
+                        setCart(SelectedProduct);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify(SelectedProduct)
+                        );
+                      }}
+                      sx={{
+                        transition: "300ms",
+                        cursor: "pointer",
+                      }}
+                      className=" hover:text-[red] "
+                    />
+                    <h4 className="flex items-end gap-2 md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
+                      {AddedProduct.price * AddedProduct.exist}
                       <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                        {" "}
                         EGP
                       </span>
-                    </p>
+                    </h4>
                   </div>
-                  {/* on click */}
-                  <div>
-                    <p className=" font-bold text-[15px]">
-                      Quantity:
-                      <span className="  text-[15px]">
-                        {" "}
-                        {AddedProduct.exist}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className=" flex flex-col justify-around items-end gap-2">
-                  <DeleteOutlinedIcon
-                    onClick={() => {
-                      const MyId = AddedProduct.id;
-                      const SelectedProduct = cart.filter((e) => e.id !== MyId);
-                      setCart(SelectedProduct);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify(SelectedProduct)
-                      );
-                    }}
-                    sx={{
-                      transition: "300ms",
-                      cursor: "pointer",
-                    }}
-                    className=" hover:text-[red] "
-                  />
-                  <h4 className="flex items-end gap-2 md:ml-60 md:mt-12 mt-10 font-bold text-[20px]">
-                    {AddedProduct.price * AddedProduct.exist}
-                    <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
-                      EGP
-                    </span>
-                  </h4>
                 </div>
               </div>
+              {/* product card */}
             </div>
-            {/* product card */}
-          </div>
-        </>
-      ))}
+          </>
+        ))
+      )}
+
       <button
         onClick={() => {
           localStorage.removeItem("cart");
@@ -155,7 +163,7 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
             Subtotal
           </p>
           <h3 className=" font-bold text-[20px]">
-            {totalPrice}{" "}
+            {loading ? 0 : totalPrice}{" "}
             <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
               {" "}
               EGP
@@ -171,7 +179,7 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
         <div className="mb-4 flex justify-between items-center ">
           <p className="font-normal text-gray-700 dark:text-gray-400">Tax</p>
           <h3 className=" font-bold text-[20px]">
-            {(totalPrice * 0.14).toFixed(2)}{" "}
+            {loading ? 0 : (totalPrice * 0.14).toFixed(2)}{" "}
             <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
               {" "}
               EGP
@@ -182,7 +190,7 @@ border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100
         <div className="mt-4 flex justify-between items-center ">
           <h3 className=" font-bold text-[20px]">Total</h3>
           <h3 className=" font-bold text-[20px]">
-            {(totalPrice * 1.14).toFixed(2)}
+            {loading ? 0 : (totalPrice * 1.14).toFixed(2)}
             <span className="text-sm font-normal text-gray-700 dark:text-gray-400">
               {" "}
               EGP

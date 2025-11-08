@@ -10,6 +10,7 @@ import { CartProvider } from "./contexts/CartContext";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { DataProvider } from "./contexts/APIDataContext";
 import { CountProvider } from "./contexts/countContext";
+import { SearchProvider } from "./contexts/searchContext";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,12 +38,14 @@ const router = createBrowserRouter([
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CountProvider>
-      <CartProvider>
-        <DataProvider>
-          <RouterProvider router={router} />
-        </DataProvider>
-      </CartProvider>
-    </CountProvider>
+    <SearchProvider>
+      <CountProvider>
+        <CartProvider>
+          <DataProvider>
+            <RouterProvider router={router} />
+          </DataProvider>
+        </CartProvider>
+      </CountProvider>
+    </SearchProvider>
   </StrictMode>
 );

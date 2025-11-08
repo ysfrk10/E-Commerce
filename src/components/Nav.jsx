@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToggleButton from "./ui/toggleButton";
 import { useCart } from "@/contexts/CartContext";
+import { useSearch } from "@/contexts/searchContext";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 // icons
 
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -21,7 +23,7 @@ export default function NavBar() {
     >
       <div
         className="max-w-7xl flex flex-wrap
-         items-center justify-between mx-auto p-4"
+         items-center justify-between mx-auto p-4 cursor-pointer"
       >
         <a
           onClick={() => {
@@ -184,6 +186,8 @@ export default function NavBar() {
 }
 
 function Search() {
+  const { search, setSearch } = useSearch();
+  const Navigate = useNavigate();
   return (
     <form className=" mx-auto">
       <label
@@ -193,24 +197,21 @@ function Search() {
         Search
       </label>
       <div className="relative">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg
-            className="w-4 h-4 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
+        <div className="absolute  inset-y-0 start-0 flex items-center ps-3 ">
+          <div
+            className="cursor-pointer  "
+            onClick={() => {
+              Navigate("/");
+            }}
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
+            <SearchOutlinedIcon className="cursor-pointer" />
+          </div>
         </div>
         <input
+          value={search}
+          onChange={(E) => {
+            setSearch(E.target.value);
+          }}
           type="search"
           id="default-search"
           className="block w-[full] md:w-150 p-4 ps-10 text-sm

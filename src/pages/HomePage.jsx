@@ -3,24 +3,33 @@ import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 import { useData } from "@/contexts/APIDataContext";
 import { useCart } from "@/contexts/CartContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearch } from "@/contexts/searchContext";
 
 export default function HomePage() {
   const Navigate = useNavigate();
   const { Data } = useData();
   const { addToCart } = useCart();
+  const { search, foundItem } = useSearch();
   const [selectedCategory, setSelected] = useState("All Categories");
+  const [filteredProduct, setFilteredProduct] = useState([]);
+  const [foundedItem, setFoundedItem] = useState([]);
 
   function selectCategory(event) {
     setSelected(event.target.value);
-    console.log(filteredProduct[0].category.name);
   }
-  const filteredProduct =
-    selectedCategory === "All Categories"
-      ? Data
-      : Data.filter((product) => {
-          return product.category.name === selectedCategory;
-        });
+  useEffect(() => {
+    const filteredProduct =
+      selectedCategory === "All Categories"
+        ? Data
+        : Data.filter((product) => {
+            return product.category.name === selectedCategory;
+          });
+    const foundedItem = foundItem(filteredProduct);
+    setFilteredProduct(filteredProduct);
+    setFoundedItem(foundedItem);
+  }, [search, selectedCategory, Data, foundItem]);
+
   let categoryName = Data.map((cat) => {
     return cat.category.name;
   });
@@ -29,12 +38,13 @@ export default function HomePage() {
   // JSX
   function FetchProductData() {
     // console.log(Data); =>>>>> ALL DATA
-    return filteredProduct.map((e) => {
+    return foundedItem.map((e) => {
       return (
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
+          key={e.id}
           transition={{ duration: 0.3 }}
           className="cursor-pointer mx-auto md:mx-4 max-w-[80%] md:max-w-[25%] transition 
           duration-300 mt-4 block  bg-gray-50 mb-10
@@ -42,7 +52,7 @@ export default function HomePage() {
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 
         md:flex md:flex-col md:justify-between"
         >
-          <div key={e.id} id={e.id}>
+          <div id={e.id}>
             <img
               id={e.id}
               onClick={(event) => {
@@ -92,9 +102,9 @@ export default function HomePage() {
             </div>
             <button
               type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+              onClick={(el) => {
+                el.preventDefault();
+                el.stopPropagation();
                 addToCart(e);
               }}
               className="md:mx-auto md:max-w-[80%] font-semibold cursor-pointer text-[20px] w-full transition duration-300 mt-4 block max-w-sm p-2 dark:bg-gray-50 border dark:border-gray-200 rounded-lg shadow-sm dark:hover:bg-gray-200
@@ -162,16 +172,6 @@ export default function HomePage() {
               })}
             </select>
             {/*  */}
-            <select
-              id="underline_select"
-              className="block px-0 w-[100px] text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-            >
-              <option selected>Featured</option>
-              <option value="US"></option>
-              <option value="CA"></option>
-              <option value="FR"></option>
-              <option value="DE"></option>
-            </select>
           </form>
         </div>
       </div>
